@@ -1,0 +1,19 @@
+{
+  "name": "spaceband",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A 3D star map of music artists, built from ListenBrainz similarity data",
+  "scripts": {
+    "sync": "cap sync android",
+    "apk": "cap sync android && cd android && ./gradlew assembleRelease"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.3",
+    "@capacitor/core": "8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.3",
+    "@fontsource/figtree": "5.3.0",
+    "@fontsource/fraunces": "5.3.0"
+  }
+}

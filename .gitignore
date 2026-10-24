@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+node_modules/
+data/raw/
+*.apk
+android/app/keystore.properties
+android/app/*.jks

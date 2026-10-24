@@ -1,0 +1,7 @@
+{
+  "appId": "io.github.hatulapro.spaceband",
+  "appName": "spaceband",
+  "webDir": "web",
+  "backgroundColor": "#060818",
+  "android": { "backgroundColor": "#060818" }
+}
