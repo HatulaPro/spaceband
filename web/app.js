@@ -342,6 +342,33 @@ $('panel-body').addEventListener('click', (e) => {
 });
 $('close').addEventListener('click', () => select(-1));
 
+// on phones the panel is a bottom sheet: swipe it down to dismiss
+{
+  const panel = $('panel'), body = $('panel-body');
+  let y0 = null, dy = 0;
+  panel.addEventListener('touchstart', (e) => {
+    if (!isPhone() || e.touches.length !== 1 || body.scrollTop > 0) { y0 = null; return; }
+    y0 = e.touches[0].clientY; dy = 0;
+  }, { passive: true });
+  panel.addEventListener('touchmove', (e) => {
+    if (y0 === null) return;
+    dy = e.touches[0].clientY - y0;
+    if (dy <= 0) { panel.style.transform = ''; return; }
+    panel.classList.add('swiping');
+    panel.style.transform = `translateY(${dy}px)`;
+  }, { passive: true });
+  const end = () => {
+    if (y0 === null) return;
+    const far = dy > 70;
+    y0 = null;
+    panel.classList.remove('swiping');
+    panel.style.transform = '';
+    if (far) select(-1, { fly: false });
+  };
+  panel.addEventListener('touchend', end);
+  panel.addEventListener('touchcancel', end);
+}
+
 // ---------------------------------------------------------------- search
 const q = $('q'), results = $('results');
 let hits = [], active = -1;
@@ -478,7 +505,7 @@ addEventListener('pointerup', (e) => {
   const touch = e.pointerType !== 'mouse';
   const hit = touch ? pickAt(e.clientX, e.clientY, 18) : S.hover;
   if (hit >= 0) select(hit);
-  else if (S.sel >= 0 && !touch) select(-1, { fly: false });  // on phones, close with × instead
+  else if (S.sel >= 0) select(-1, { fly: false });  // tapping empty sky closes the panel too
 });
 
 const _m = new THREE.Matrix4();

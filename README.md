@@ -35,7 +35,8 @@ asks. The map, fonts and 3D engine are bundled, so it works offline. Only the
 top tracks and genres in the artist panel are fetched live.
 
 On the phone: drag with one finger to rotate, pinch to zoom, use two fingers to
-pan, and tap a star to open it. Close the artist sheet with ×.
+pan, and tap a star to open it. Close the artist sheet with ×, by swiping it
+down, or by tapping an empty patch of sky.
 
 The app wraps `web/` with [Capacitor](https://capacitorjs.com). To rebuild it
 (Node 20+, JDK 21, Android SDK 36):

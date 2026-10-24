@@ -88,12 +88,19 @@ button, input { font: inherit; color: inherit; }
   position: fixed; top: 16px; right: 16px; bottom: 16px; width: 360px;
   background: var(--glass); border: 1px solid var(--edge); border-radius: 18px;
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  overflow-y: auto; padding: 22px 22px 18px;
+  display: flex; flex-direction: column; overflow: hidden; padding: 22px 22px 18px;
   animation: panel-in 0.28s ease-out;
+}
+#panel[hidden] { display: none; }  /* display:flex above would otherwise beat [hidden] */
+/* the body scrolls, not the panel, so the × stays put */
+#panel-body {
+  overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  padding: 0 8px; margin: 0 -8px;  /* room for the full-bleed hover rows inside the list */
 }
 @keyframes panel-in { from { opacity: 0; transform: translateX(14px); } }
 #panel .close {
-  position: absolute; top: 10px; right: 12px; width: 32px; height: 32px; border-radius: 50%;
+  position: absolute; top: 10px; right: 12px; z-index: 2;
+  width: 32px; height: 32px; border-radius: 50%;
   border: 0; background: transparent; color: var(--dust); font-size: 22px; cursor: pointer;
 }
 #panel .close:hover { color: var(--ink); background: rgba(155, 152, 196, 0.15); }
@@ -192,10 +199,21 @@ button, input { font: inherit; color: inherit; }
   #panel {
     top: auto; left: 0; right: 0; bottom: 0; width: auto; max-height: 50vh;
     border-radius: 18px 18px 0 0; border-bottom: 0;
-    padding: 18px 18px calc(14px + env(safe-area-inset-bottom));
+    padding: 20px 18px calc(14px + env(safe-area-inset-bottom));
     animation: sheet-in 0.25s ease-out;
+    touch-action: pan-y;
   }
-  #panel h2 { font-size: 25px; }
+  /* grab handle: the sheet can also be swiped down to dismiss */
+  #panel::before {
+    content: ""; position: absolute; top: 7px; left: 50%; z-index: 2; width: 42px; height: 4px;
+    margin-left: -21px; border-radius: 2px; background: rgba(155, 152, 196, 0.45);
+  }
+  #panel.swiping { animation: none; transition: none; }
+  #panel .close {
+    top: 14px; right: 8px; width: 44px; height: 44px; font-size: 26px;
+    color: var(--ink); background: rgba(20, 24, 58, 0.85);  /* content scrolls underneath it */
+  }
+  #panel h2 { margin-right: 44px; font-size: 25px; }
   .sim button { padding: 9px 8px; }
   #controls { left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); }
   #controls > button, .seg button { font-size: 14px; }
